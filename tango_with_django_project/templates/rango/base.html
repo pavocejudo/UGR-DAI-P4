@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="rango">
+    <meta name="author" content="Sergio">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Rango - {% block title %}{% endblock %}</title>
+    <link rel="icon" href="{% static 'images/logo.ico' %}">
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+    <script src="{% static 'jquery-1.12.0.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+  </head>
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/rango/">Rango</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'index' %}">Home <span class="glyphicon glyphicon-home"></span></a></li>
+                    {%if user.is_authenticated %}
+                      <li><a href="{% url 'logout' %}?next=/rango/">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
+                      <li><a href="{% url 'add_bar' %}">Add a new Bar <span class="glyphicon glyphicon-plus"></span></a></li>
+                    {%else%}
+                      <li><a href="{%url 'registro'%}">Register <span class="glyphicon glyphicon-log-in"></span></a></li>
+                      <li><a href="{% url 'login' %}">Login <span class="glyphicon glyphicon-user"></span></a></li>
+                    {%endif%}
+                    <li><a href="{% url 'about' %}">About <span class="glyphicon glyphicon-info-sign"></span></a></li>
+                </ul>
+            </div>
+         </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                {% block side_block %}
+                    {% if bares %}
+                        <ul>
+                            {% for b in bares %}
+                                <a href="/rango/bar/{{b.slug}}/">{{ b.nombre }} </a>- <span class="badge">{{ b.numero_visitas }} <span class="glyphicon glyphicon-eye-open"></span></span><br>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+
+                    {% endif %}
+                {% endblock %}
+                <!-- Grafica -->
+                <script src="http://code.highcharts.com/highcharts.js"></script>
+                <script src="{% static 'grafica.js' %}"></script>
+                <script type="text/javascript">
+                $(function(){
+                        $.ajax({
+                            url: "{% url 'reclama_datos' %}",
+                            type: "get",
+                            success: function(datos){
+                                Visualiza_datos(datos);
+                            },
+                            failure: function(datos){
+                                alert('No se pueden visualizar los datos');
+                            }
+                        });
+                    });
+
+                </script>
+                <div id="container" style="height: 300px"></div>
+                <!-- botones de tamaño de letra -->
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" name="grande" id="grande" >Letra grande</button>
+                    <button type="button" class="btn btn-default" name="normal" id="normal" >Letra normal</button>
+                    <button type="button" class="btn btn-default" name="pequena" id="peque" >Letra pequeña</button>
+                </div>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+              <div>
+                {% block body_block %}{% endblock %}
+
+              </div>
+            </div>
+        </div>
+
+      </div>
+    <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="{% static 'tamanio-letra.js' %}"></script>
+
+    </body>
+</html>

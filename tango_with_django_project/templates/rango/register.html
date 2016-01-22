@@ -1,0 +1,25 @@
+{% extends 'rango/base.html' %}
+
+{%block title %}
+Registro
+{% endblock %}
+
+
+
+{% block body_block %}
+    <h1>Registro de Rango</h1>
+
+    {% if registered %}
+        Rango: <b>Gracias por registrarse! </b>
+        <a href="/rango/">Inicio</a><br>
+    {% else %}
+        <hr>
+        <form action="/rango/registro/" id='user_form' enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+            <hr>
+            <input type="submit" name="submit" value="Registrate">
+        </form>
+    {%endif%}
+{% endblock %}

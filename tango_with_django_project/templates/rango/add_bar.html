@@ -1,0 +1,22 @@
+{% extends 'rango/base.html' %}
+
+{%block title %}
+Añadir bar{% endblock %}
+
+
+{% block body_block %}
+        <h1>Añadir un bar</h1>
+        <form action="/rango/add_bar/" method="post" id="bar_form">
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% for fields in form.visible_fields %}
+                {{ fields.errors }}
+                {{ fields.help_text }}
+                {{ fields }}<br><br>
+            {% endfor %}
+            <p><input type="submit" name="submit" value="Crear bar ">
+        </form>
+{% endblock %}

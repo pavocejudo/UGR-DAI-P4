@@ -1,0 +1,24 @@
+{% extends 'rango/base.html' %}
+
+{%block title%}
+    {{bar}}-{{tapa}}
+{%endblock%}
+
+{%block side_block %}
+    {%if tapa %}
+        <ul>
+        {% for t in tapas %}
+            <li><a href="/rango/bar/{{b.slug}}/tapas/{{t.slug}}/">{{t.nombre}}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{%endblock%}
+{% block body_block %}
+    <div class="page-header">
+        <h1>{{b.nombre}}</h1>
+        <h2>-- {{tapa}} -- <a href="add_votos/">{{ votos_tapa }} <span class="glyphicon glyphicon-thumbs-up"></span></a> </h2>
+    </div>
+    {% if tapa %}
+        <img src="{{MEDIA_URL}}/{{tapa_image}}" alt="{{ tapa.nombre }}" />
+    {% endif %}
+{% endblock %}

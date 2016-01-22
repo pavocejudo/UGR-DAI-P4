@@ -1,0 +1,29 @@
+{% extends 'rango/base.html' %}
+
+{%block title %}
+Añadir una tapa
+{% endblock %}
+
+{% block body_block %}
+    <h1>Añadir una tapa</h1>
+    <form action="/rango/bar/{{bar_name_slug}}/add_tapa/" method="post" id="tapa_form">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+
+        {% for fields in form.visible_fields %}
+            {{ fields.errors }}
+            {{ fields.help_text }}
+            {{ fields }}<br><br>
+            {%for t in tapas %}
+                {% if fields.nombre==t.nombre %}
+                    <strong>Esta tapa ya existe en este bar</strong>
+                {%endif%}
+            {% endfor %}
+
+        {% endfor %}
+
+        <input type="submit" name="submit" value="Crear tapa ">
+    </form>
+{% endblock %}

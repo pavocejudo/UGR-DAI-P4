@@ -1,0 +1,34 @@
+{% extends 'rango/base.html' %}
+{% load easy_maps_tags %}
+
+{%block title %}
+    Bares
+{% endblock %}
+
+
+{% block body_block %}
+
+      {%if bar %}
+      <div class="page-header">
+        <h1>{{ bar_nombre }}</h1>
+      </div>
+        {% if tapa %}
+          <ul>
+            {%for t in tapa %}
+            <li><a href="/rango/bar/{{bar.slug}}/tapas/{{t.slug}}/">{{ t.nombre }}</a>&nbsp;
+                {{ t.votos }} <span class="glyphicon glyphicon-thumbs-up"></span>
+            </li>
+            {%endfor%}
+          </ul>
+        {%else%}
+            <strong>No hay tapas en este bar</strong>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <p><a href="/rango/bar/{{bar.slug}}/add_tapa/">Añadir tapa a este bar</a></p>
+        {%endif%}
+      {%else%}
+        El bar {{ bar_nombre}} no existe
+      {%endif%}
+
+      {% easy_map bar_direccion 300 300 17 %}
+{% endblock %}
