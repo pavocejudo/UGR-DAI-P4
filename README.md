@@ -1,2 +1,3 @@
 # UGR-DAI-P4
-Practica con Django de la asignatura Diseño de Aplicaciones de Internet
+Práctica 4 de la asignatura Diseño de Aplicaciones de Internet
+ en la que se utiliza Django para su realización.
